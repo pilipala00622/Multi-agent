@@ -20,7 +20,7 @@ class CRunner(Runner):
         rewards_log = []
         inv_log = []
         actions_log = []
-        demand_log = []
+        demand_log = [] # 库存日志
         overall_reward= []
         best_reward = float('-inf')
         best_bw = []
@@ -29,9 +29,10 @@ class CRunner(Runner):
         for episode in range(episodes):
             
             if episode % self.eval_interval == 0 and self.use_eval:
-                re, bw_res = self.eval()
+                re, bw_res = self.eval() #调用函数
                 print()
                 print("Eval average reward: ", re, " Eval ordering fluctuation measurement (downstream to upstream): ", bw_res)
+                # 一轮的更新
                 if(re > best_reward and episode > 0):
                     self.save()
                     print("A better model is saved!")
@@ -240,18 +241,20 @@ class CRunner(Runner):
     
     @torch.no_grad()
     def eval(self):
-        
+        # 总的reward
         overall_reward = []
+        #
         eval_num = self.eval_envs.get_eval_num()
 
         for _ in range(eval_num):
+            #
             eval_obs, eval_available_actions = self.eval_envs.reset()
-            
+            # 观测列表
             eval_share_obs = []
             for o in eval_obs:
                 eval_share_obs.append(list(chain(*o)))
             eval_share_obs = np.array(eval_share_obs)
-
+            # 调用属性or函数
             eval_rnn_states = np.zeros((self.n_eval_rollout_threads, self.num_agents, self.recurrent_N, self.hidden_size), dtype=np.float32)
             eval_masks = np.ones((self.n_eval_rollout_threads, self.num_agents, 1), dtype=np.float32)
 

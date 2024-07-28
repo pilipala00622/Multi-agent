@@ -1,6 +1,6 @@
 import argparse
 
-def get_config():
+def get_config(): # 获取配置
     """
     The configuration parser for common hyperparameters of all environment. 
     Please reach each `scripts/train/<env>_runner.py` file to find private hyperparameters

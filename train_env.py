@@ -20,8 +20,8 @@ def parse_args(args, parser):
     return all_args
 
 
-if __name__ == "__main__":
-    parser = get_config()
+if __name__ == "__main__": # 主函数
+    parser = get_config() # 输入和输出？
     all_args = parse_args(sys.argv[1:], parser)
     seeds = all_args.seed
 
@@ -78,7 +78,7 @@ if __name__ == "__main__":
             "run_dir": run_dir
         }
 
-        # run experiments
+        # run experiments（进行实验）
         runner = Runner(config)
         reward, bw = runner.run()
 
